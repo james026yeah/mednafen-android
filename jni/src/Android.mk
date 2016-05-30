@@ -8,13 +8,13 @@ SDL_PATH := ../SDL
 MEDNAFEN_SRC_PATH := $(LOCAL_PATH)/Mednafen/src
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include
-LOCAL_CPP_INCLUDES := $(LOCAL_PATH)
-LOCAL_CPP_INCLUDES += $(LOCAL_PATH)/Mednafen/src
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/Mednafen/include
+LOCAL_CPP_INCLUDES := $(LOCAL_PATH)/Mednafen/include
 
 
 # Add your application source files here...
 LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
-	 $(MEDNAFEN_SRC_PATH)/drivers_android/main.c
+	 $(MEDNAFEN_SRC_PATH)/drivers_android/main.cpp
 #	 testgles.c \
 
 
