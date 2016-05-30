@@ -1,0 +1,6 @@
+*.out
+tags
+bin
+obj
+gen
+libs
