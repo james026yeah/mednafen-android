@@ -15,6 +15,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#define LOG_TAG "mednafen"
+#include <android/log.h>
+
 #include        "mednafen.h"
 
 #include	<math.h>
@@ -1223,7 +1226,7 @@ bool MDFNI_InitializeModules(const std::vector<MDFNGI *> &ExternalSystems)
  };
  std::string i_modules_string, e_modules_string;
 
- assert(MEDNAFEN_VERSION_NUMERIC >= 0x0938);
+// assert(MEDNAFEN_VERSION_NUMERIC >= 0x0938);
 
  for(unsigned int i = 0; i < sizeof(InternalSystems) / sizeof(MDFNGI *); i++)
  {
@@ -1828,6 +1831,7 @@ void MDFN_printf(const char *format, ...) noexcept
 
  va_list ap;
  va_start(ap,format);
+ __android_log_print(ANDROID_LOG_INFO, LOG_TAG,  format, ap);
 
 
  // First, determine how large our format_temp buffer needs to be.
@@ -1878,6 +1882,7 @@ void MDFN_PrintError(const char *format, ...) noexcept
  va_list ap;
 
  va_start(ap, format);
+ __android_log_print(ANDROID_LOG_ERROR, LOG_TAG,  format, ap);
 
  temp = trio_vaprintf(format, ap);
  if(!temp)
@@ -1900,6 +1905,7 @@ void MDFN_DebugPrintReal(const char *file, const int line, const char *format, .
  va_list ap;
 
  va_start(ap, format);
+ __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG,  format, ap);
 
  temp = trio_vaprintf(format, ap);
  printf("%s:%d  %s\n", file, line, temp);

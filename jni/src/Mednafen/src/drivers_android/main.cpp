@@ -16,6 +16,8 @@
 #include <android/log.h>
 
 JoystickManager *joy_manager = NULL;
+static uint32 volatile MainThreadID = 0;
+
 
 void MDFND_PrintError(const char *s)
 {
@@ -63,6 +65,18 @@ void MDFND_Message(const char *s)
 */
 }  
 
+/*
+void MDFN_printf(const char *format, ...) noexcept
+{
+     va_list ap; 
+     va_start(ap, format);
+     __android_log_print(ANDROID_LOG_INFO, LOG_TAG,  format, ap);
+     va_end(ap);
+
+}
+*/
+
+
 void SendCEvent(unsigned int code, void *data1, void *data2)
 {
     SDL_Event evt;
@@ -109,14 +123,17 @@ int main(int argc, char *argv[])
 
     SDL_JoystickEventState(SDL_IGNORE);
 
+    MainThreadID = MDFND_ThreadID();
+
+    if(!MDFNI_InitializeModules(ExternalSystems)) {
+        MDFND_PrintError("MDFNI_InitializeModules failed");
+        return -1;
+    }
+    MDFND_Message("MDFNI_InitializeModules success");
+
     joy_manager = new JoystickManager();
     joy_manager->SetAnalogThreshold(MDFN_GetSettingF("analogthreshold") / 100);
 
-    if(!MDFNI_InitializeModules(ExternalSystems)) {
-        return -1;
-    }
-
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "No OpenGL ES support on this system\n");
     MDFND_Message("end......................");
     return 1;
 }
