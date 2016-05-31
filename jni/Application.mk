@@ -12,4 +12,5 @@ APP_CPPFLAGS += -fexceptions
 APP_CPPFLAGS += -frtti
 
 APP_ABI := armeabi
+#APP_ABI := all
 #APP_ABI := armeabi armeabi-v7a mips x86

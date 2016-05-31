@@ -8,9 +8,14 @@
 #include <string.h>
 #include <math.h>
 
+#include "input.h"
+#include "Joystick.h"
+
 #define LOG_TAG  "mednafen"
 
 #include <android/log.h>
+
+JoystickManager *joy_manager = NULL;
 
 void MDFND_PrintError(const char *s)
 {
@@ -103,6 +108,9 @@ int main(int argc, char *argv[])
     }
 
     SDL_JoystickEventState(SDL_IGNORE);
+
+    joy_manager = new JoystickManager();
+    joy_manager->SetAnalogThreshold(MDFN_GetSettingF("analogthreshold") / 100);
 
     if(!MDFNI_InitializeModules(ExternalSystems)) {
         return -1;

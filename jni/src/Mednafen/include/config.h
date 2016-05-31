@@ -631,7 +631,7 @@
 
 /* Define if we are compiling with with fancy CPU-intensive software video
    scalers. */
-#define WANT_FANCY_SCALERS 1
+//#define WANT_FANCY_SCALERS 1
 
 /* Define if we are compiling with GBA emulation. */
 //#define WANT_GBA_EMU 1

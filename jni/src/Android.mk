@@ -16,6 +16,8 @@ LOCAL_CPP_INCLUDES := $(LOCAL_PATH)/Mednafen/include
 LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	 $(MEDNAFEN_SRC_PATH)/drivers_android/main.cpp \
 	 $(MEDNAFEN_SRC_PATH)/drivers_android/thread_sdl.cpp \
+	 $(MEDNAFEN_SRC_PATH)/drivers_android/Joystick.cpp \
+	 $(MEDNAFEN_SRC_PATH)/drivers_android/Joystick_SDL.cpp \
 	 $(MEDNAFEN_SRC_PATH)/debug.cpp \
 	 $(MEDNAFEN_SRC_PATH)/dis6502.cpp \
 	 $(MEDNAFEN_SRC_PATH)/endian.cpp \
