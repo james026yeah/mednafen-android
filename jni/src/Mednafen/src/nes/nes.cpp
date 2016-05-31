@@ -454,6 +454,10 @@ static void StateAction(StateMem *sm, const unsigned load, const bool data_only)
  }
 }
 
+char* gettext_noop(char *s) {
+    return s;
+}
+
 // TODO: Actual enum vals
 static const MDFNSetting_EnumList NTSCPresetList[] =
 {

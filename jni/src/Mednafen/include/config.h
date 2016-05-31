@@ -649,7 +649,7 @@
 //#define WANT_MD_EMU 1
 
 /* Define if we are compiling with NES emulation. */
-//#define WANT_NES_EMU 1
+#define WANT_NES_EMU 1
 
 /* Define if we are compiling with NGP emulation. */
 //#define WANT_NGP_EMU 1
