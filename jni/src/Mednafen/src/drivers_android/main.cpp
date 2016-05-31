@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include <math.h>
 
 #include "input.h"
@@ -18,6 +19,10 @@
 JoystickManager *joy_manager = NULL;
 static uint32 volatile MainThreadID = 0;
 
+MDFNGI *CurGame=NULL;
+
+
+static int volatile NeedExitNow = 0;
 
 void MDFND_PrintError(const char *s)
 {
@@ -112,6 +117,14 @@ void MDFND_Sleep(uint32 ms)
     SDL_Delay(ms);
 }
 
+static int LoadGame(const char *force_module, const char *path) {
+    return 1;
+}
+
+int CloseGame(void) {
+    return 1;
+}
+
 int main(int argc, char *argv[])
 {
     std::vector<MDFNGI *> ExternalSystems;
@@ -131,8 +144,26 @@ int main(int argc, char *argv[])
     }
     MDFND_Message("MDFNI_InitializeModules success");
 
-    joy_manager = new JoystickManager();
-    joy_manager->SetAnalogThreshold(MDFN_GetSettingF("analogthreshold") / 100);
+    //joy_manager = new JoystickManager();
+    //joy_manager->SetAnalogThreshold(MDFN_GetSettingF("analogthreshold") / 100);
+
+    if(LoadGame("nes", "hello.nes")) {
+    } else {
+        NeedExitNow = 1;
+    }
+
+    while (!NeedExitNow) {
+    //loop enjoy game
+        MDFND_Message("run game loop");
+        sleep(10);
+    }
+
+    CloseGame();
+
+    //delete joy_manager;
+    //joy_manager = NULL;
+
+    SDL_Quit();
 
     MDFND_Message("end......................");
     return 1;

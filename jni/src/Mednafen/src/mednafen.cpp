@@ -1817,6 +1817,7 @@ void MDFN_indent(int indent)
  curindent += indent;
  if(curindent < 0)
  {
+  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, "MDFN_indent negative!\n");
   fprintf(stderr, "MDFN_indent negative!\n");
   curindent = 0;
  }
