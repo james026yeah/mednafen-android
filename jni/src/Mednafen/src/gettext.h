@@ -23,7 +23,9 @@
 #if ENABLE_NLS
 
 /* Get declarations of GNU message catalog functions.  */
+#if defined(__language)
 # include <libintl.h>
+#endif
 
 #else
 

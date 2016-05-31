@@ -3,7 +3,8 @@
 # See CPLUSPLUS-SUPPORT.html in the NDK documentation for more information
 #APP_STL := stlport_static 
 #APP_PLATFORM := android-12
-APP_STL := stlport_static
+#APP_STL := gnustl_static
+APP_STL := c++_static
 STLPORT_FORCE_REBUILD := true
 
 

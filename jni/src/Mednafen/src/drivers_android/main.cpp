@@ -9,6 +9,8 @@
   including commercial applications, and to alter it and redistribute it
   freely.
 */
+#include "main.h"
+
 #include <algorithm>
 #include <bitset>
 

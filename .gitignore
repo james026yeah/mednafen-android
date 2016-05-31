@@ -4,3 +4,5 @@ bin
 obj
 gen
 libs
+*.deps
+Makefile
