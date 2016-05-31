@@ -5,9 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "gettext.h"
 
-#define _(String) gettext (String)
+#define _(String) (String)
 
 #include "math_ops.h"
 #include "git.h"

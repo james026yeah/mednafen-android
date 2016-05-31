@@ -584,7 +584,7 @@ void MDFNSS_CheckStates(void)
         }
 
 	CurrentState = 0;
-	MDFND_SetStateStatus(NULL);
+	//MDFND_SetStateStatus(NULL);
 }
 
 void MDFNSS_GetStateInfo(const char *filename, StateStatusStruct *status)
@@ -639,7 +639,7 @@ void MDFNI_SelectState(int w) noexcept
 
  if(w == -1) 
  {  
-  MDFND_SetStateStatus(NULL);
+ // MDFND_SetStateStatus(NULL);
   return; 
  }
  MDFNI_SelectMovie(-1);
@@ -666,7 +666,7 @@ void MDFNI_SelectState(int w) noexcept
  status->recently_saved = RecentlySavedState;
 
  MDFNSS_GetStateInfo(MDFN_MakeFName(MDFNMKF_STATE,CurrentState,NULL).c_str(), status);
- MDFND_SetStateStatus(status);
+ //MDFND_SetStateStatus(status);
 }  
 
 bool MDFNI_SaveState(const char *fname, const char *suffix, const MDFN_Surface *surface, const MDFN_Rect *DisplayRect, const int32 *LineWidths) noexcept
@@ -702,7 +702,7 @@ bool MDFNI_SaveState(const char *fname, const char *suffix, const MDFN_Surface *
    gp.close();
   }
 
-  MDFND_SetStateStatus(NULL);
+  //MDFND_SetStateStatus(NULL);
 
   if(!fname && !suffix)
   {
@@ -719,7 +719,7 @@ bool MDFNI_SaveState(const char *fname, const char *suffix, const MDFN_Surface *
    MDFN_PrintError("%s", e.what());
 
   if(MDFNnetplay)
-   MDFND_NetplayText(e.what(), false);
+   //MDFND_NetplayText(e.what(), false);
 
   ret = false;
  }
@@ -772,7 +772,7 @@ bool MDFNI_LoadState(const char *fname, const char *suffix) noexcept
   if(MDFNMOV_IsRecording())
    MDFNMOV_RecordState();
 
-  MDFND_SetStateStatus(NULL);
+  //MDFND_SetStateStatus(NULL);
 
   if(!fname && !suffix)
   {
@@ -788,7 +788,7 @@ bool MDFNI_LoadState(const char *fname, const char *suffix) noexcept
    MDFN_PrintError("%s", e.what());
 
   if(MDFNnetplay)
-   MDFND_NetplayText(e.what(), false);
+   //MDFND_NetplayText(e.what(), false);
 
   ret = false;
  }

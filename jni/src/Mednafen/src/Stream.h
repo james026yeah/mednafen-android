@@ -5,8 +5,7 @@
 
 #include <mednafen/types.h>
 
-#include "gettext.h"
-#define _(String) gettext (String)
+#define _(String) (String)
 
 #include <errno.h>
 

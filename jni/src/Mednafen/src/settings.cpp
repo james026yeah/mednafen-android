@@ -114,9 +114,9 @@ static bool MR_StringToDouble(const char* string_value, double* dvalue)
   }
   else
   {
-   lconv* l = localeconv();
-   assert(l != NULL);
-   MR_Radix = *(l->decimal_point);
+   //lconv* l = localeconv();
+   //assert(l != NULL);
+   //MR_Radix = *(l->decimal_point);
   }
  }
 

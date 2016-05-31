@@ -35,12 +35,14 @@ static INLINE void MDFN_FastU32MemsetM8(uint32 *array, uint32 value_32, unsigned
         : "a" (value_32 | ((uint64)value_32 << 32)), "D" (array), "c" (u32len >> 1)
         : "cc", "memory");
  #else
+/*
  asm volatile(
         "cld\n\t"
         "rep stosl\n\t"
         : "=D" (dummy_output0), "=c" (dummy_output1)
         : "a" (value_32), "D" (array), "c" (u32len)
         : "cc", "memory");
+*/
 
  #endif
 

@@ -364,6 +364,6 @@ void MDFNI_SelectMovie(int w)
  status->recently_saved = RecentlySavedMovie;
 
  MDFNSS_GetStateInfo(MDFN_MakeFName(MDFNMKF_MOVIE,CurrentMovie,NULL).c_str(), status);
- MDFND_SetMovieStatus(status);
+// MDFND_SetMovieStatus(status);
 }
 

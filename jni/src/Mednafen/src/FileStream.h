@@ -65,7 +65,7 @@ class FileStream : public Stream
   if(MDFN_UNLIKELY(errno != 0))
   {
    ErrnoHolder ene(errno);
-   throw(MDFN_Error(ene.Errno(), _("Error reading from opened file \"%s\": %s"), path_save.c_str(), ene.StrError()));
+   throw(MDFN_Error(ene.Errno(), ("Error reading from opened file \"%s\": %s"), path_save.c_str(), ene.StrError()));
   }
   return(ret);
  }

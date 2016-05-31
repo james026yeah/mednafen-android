@@ -56,75 +56,75 @@
 
 static void SettingChanged(const char* name);
 
-static const char *CSD_forcemono = gettext_noop("Force monophonic sound output.");
-static const char *CSD_enable = gettext_noop("Enable (automatic) usage of this module.");
-static const char *CSD_tblur = gettext_noop("Enable video temporal blur(50/50 previous/current frame by default).");
-static const char *CSD_tblur_accum = gettext_noop("Accumulate color data rather than discarding it.");
-static const char *CSD_tblur_accum_amount = gettext_noop("Blur amount in accumulation mode, specified in percentage of accumulation buffer to mix with the current frame.");
+static const char *CSD_forcemono = ("Force monophonic sound output.");
+static const char *CSD_enable = ("Enable (automatic) usage of this module.");
+static const char *CSD_tblur = ("Enable video temporal blur(50/50 previous/current frame by default).");
+static const char *CSD_tblur_accum = ("Accumulate color data rather than discarding it.");
+static const char *CSD_tblur_accum_amount = ("Blur amount in accumulation mode, specified in percentage of accumulation buffer to mix with the current frame.");
 
 static MDFNSetting_EnumList VCodec_List[] =
 {
  { "raw", (int)QTRecord::VCODEC_RAW, "Raw",
-	gettext_noop("A fast codec, computationally, but will cause enormous file size and may exceed your storage medium's sustained write rate.") },
+	("A fast codec, computationally, but will cause enormous file size and may exceed your storage medium's sustained write rate.") },
 
  { "cscd", (int)QTRecord::VCODEC_CSCD, "CamStudio Screen Codec",
-	gettext_noop("A good balance between performance and compression ratio.") },
+	("A good balance between performance and compression ratio.") },
 
  { "png", (int)QTRecord::VCODEC_PNG, "PNG",
-	gettext_noop("Has a better compression ratio than \"cscd\", but is much more CPU intensive.  Use for compatibility with official QuickTime in cases where you have insufficient disk space for \"raw\".") },
+	("Has a better compression ratio than \"cscd\", but is much more CPU intensive.  Use for compatibility with official QuickTime in cases where you have insufficient disk space for \"raw\".") },
 
  { NULL, 0 },
 };
 
 static MDFNSetting_EnumList Deinterlacer_List[] =
 {
- { "weave", Deinterlacer::DEINT_WEAVE, gettext_noop("Good for low-motion video; can be used in conjunction with negative <system>.scanlines setting values.") },
- { "bob", Deinterlacer::DEINT_BOB, gettext_noop("Good for causing a headache.  All glory to Bob.") },
- { "bob_offset", Deinterlacer::DEINT_BOB_OFFSET, gettext_noop("Good for high-motion video, but is a bit flickery; reduces the subjective vertical resolution.") },
+ { "weave", Deinterlacer::DEINT_WEAVE, ("Good for low-motion video; can be used in conjunction with negative <system>.scanlines setting values.") },
+ { "bob", Deinterlacer::DEINT_BOB, ("Good for causing a headache.  All glory to Bob.") },
+ { "bob_offset", Deinterlacer::DEINT_BOB_OFFSET, ("Good for high-motion video, but is a bit flickery; reduces the subjective vertical resolution.") },
 
  { NULL, 0 },
 };
 
-static const char *fname_extra = gettext_noop("See fname_format.txt for more information.  Edit at your own risk.");
+static const char *fname_extra = ("See fname_format.txt for more information.  Edit at your own risk.");
 
 static MDFNSetting MednafenSettings[] =
 {
-  { "netplay.password", MDFNSF_NOFLAGS, gettext_noop("Server password."), gettext_noop("Password to connect to the netplay server."), MDFNST_STRING, "" },
-  { "netplay.localplayers", MDFNSF_NOFLAGS, gettext_noop("Local player count."), gettext_noop("Number of local players for network play.  This number is advisory to the server, and the server may assign fewer players if the number of players requested is higher than the number of controllers currently available."), MDFNST_UINT, "1", "0", "16" },
-  { "netplay.nick", MDFNSF_NOFLAGS, gettext_noop("Nickname."), gettext_noop("Nickname to use for network play chat."), MDFNST_STRING, "" },
-  { "netplay.gamekey", MDFNSF_NOFLAGS, gettext_noop("Key to hash with the MD5 hash of the game."), NULL, MDFNST_STRING, "" },
+  { "netplay.password", MDFNSF_NOFLAGS, ("Server password."), ("Password to connect to the netplay server."), MDFNST_STRING, "" },
+  { "netplay.localplayers", MDFNSF_NOFLAGS, ("Local player count."), ("Number of local players for network play.  This number is advisory to the server, and the server may assign fewer players if the number of players requested is higher than the number of controllers currently available."), MDFNST_UINT, "1", "0", "16" },
+  { "netplay.nick", MDFNSF_NOFLAGS, ("Nickname."), ("Nickname to use for network play chat."), MDFNST_STRING, "" },
+  { "netplay.gamekey", MDFNSF_NOFLAGS, ("Key to hash with the MD5 hash of the game."), NULL, MDFNST_STRING, "" },
 
-  { "srwframes", MDFNSF_NOFLAGS, gettext_noop("Number of frames to keep states for when state rewinding is enabled."), 
-	gettext_noop("WARNING: Setting this to a large value may cause excessive RAM usage in some circumstances, such as with games that stream large volumes of data off of CDs."), MDFNST_UINT, "600", "10", "99999" },
+  { "srwframes", MDFNSF_NOFLAGS, ("Number of frames to keep states for when state rewinding is enabled."), 
+	("WARNING: Setting this to a large value may cause excessive RAM usage in some circumstances, such as with games that stream large volumes of data off of CDs."), MDFNST_UINT, "600", "10", "99999" },
 
-  { "cd.image_memcache", MDFNSF_NOFLAGS, gettext_noop("Cache entire CD images in memory."), gettext_noop("Reads the entire CD image(s) into memory at startup(which will cause a small delay).  Can help obviate emulation hiccups due to emulated CD access.  May cause more harm than good on low memory systems, systems with swap enabled, and/or when the disc images in question are on a fast SSD."), MDFNST_BOOL, "0" },
+  { "cd.image_memcache", MDFNSF_NOFLAGS, ("Cache entire CD images in memory."), ("Reads the entire CD image(s) into memory at startup(which will cause a small delay).  Can help obviate emulation hiccups due to emulated CD access.  May cause more harm than good on low memory systems, systems with swap enabled, and/or when the disc images in question are on a fast SSD."), MDFNST_BOOL, "0" },
 
-  { "filesys.untrusted_fip_check", MDFNSF_NOFLAGS, gettext_noop("Enable untrusted file-inclusion path security check."),
-	gettext_noop("When this setting is set to \"1\", the default, paths to files referenced from files like CUE sheets and PSF rips are checked for certain characters that can be used in directory traversal, and if found, loading is aborted.  Set it to \"0\" if you want to allow constructs like absolute paths in CUE sheets, but only if you understand the security implications of doing so(see \"Security Issues\" section in the documentation)."), MDFNST_BOOL, "1" },
+  { "filesys.untrusted_fip_check", MDFNSF_NOFLAGS, ("Enable untrusted file-inclusion path security check."),
+	("When this setting is set to \"1\", the default, paths to files referenced from files like CUE sheets and PSF rips are checked for certain characters that can be used in directory traversal, and if found, loading is aborted.  Set it to \"0\" if you want to allow constructs like absolute paths in CUE sheets, but only if you understand the security implications of doing so(see \"Security Issues\" section in the documentation)."), MDFNST_BOOL, "1" },
 
-  { "filesys.path_snap", MDFNSF_NOFLAGS, gettext_noop("Path to directory for screen snapshots."), NULL, MDFNST_STRING, "snaps" },
-  { "filesys.path_sav", MDFNSF_NOFLAGS, gettext_noop("Path to directory for save games and nonvolatile memory."), gettext_noop("WARNING: Do not set this path to a directory that contains Famicom Disk System disk images, or you will corrupt them when you load an FDS game and exit Mednafen."), MDFNST_STRING, "sav" },
-  { "filesys.path_state", MDFNSF_NOFLAGS, gettext_noop("Path to directory for save states."), NULL, MDFNST_STRING, "mcs" },
-  { "filesys.path_movie", MDFNSF_NOFLAGS, gettext_noop("Path to directory for movies."), NULL, MDFNST_STRING, "mcm" },
-  { "filesys.path_cheat", MDFNSF_NOFLAGS, gettext_noop("Path to directory for cheats."), NULL, MDFNST_STRING, "cheats" },
-  { "filesys.path_palette", MDFNSF_NOFLAGS, gettext_noop("Path to directory for custom palettes."), NULL, MDFNST_STRING, "palettes" },
-  { "filesys.path_pgconfig", MDFNSF_NOFLAGS, gettext_noop("Path to directory for per-game configuration override files."), NULL, MDFNST_STRING, "pgconfig" },
-  { "filesys.path_firmware", MDFNSF_NOFLAGS, gettext_noop("Path to directory for firmware."), NULL, MDFNST_STRING, "firmware" },
+  { "filesys.path_snap", MDFNSF_NOFLAGS, ("Path to directory for screen snapshots."), NULL, MDFNST_STRING, "snaps" },
+  { "filesys.path_sav", MDFNSF_NOFLAGS, ("Path to directory for save games and nonvolatile memory."), ("WARNING: Do not set this path to a directory that contains Famicom Disk System disk images, or you will corrupt them when you load an FDS game and exit Mednafen."), MDFNST_STRING, "sav" },
+  { "filesys.path_state", MDFNSF_NOFLAGS, ("Path to directory for save states."), NULL, MDFNST_STRING, "mcs" },
+  { "filesys.path_movie", MDFNSF_NOFLAGS, ("Path to directory for movies."), NULL, MDFNST_STRING, "mcm" },
+  { "filesys.path_cheat", MDFNSF_NOFLAGS, ("Path to directory for cheats."), NULL, MDFNST_STRING, "cheats" },
+  { "filesys.path_palette", MDFNSF_NOFLAGS, ("Path to directory for custom palettes."), NULL, MDFNST_STRING, "palettes" },
+  { "filesys.path_pgconfig", MDFNSF_NOFLAGS, ("Path to directory for per-game configuration override files."), NULL, MDFNST_STRING, "pgconfig" },
+  { "filesys.path_firmware", MDFNSF_NOFLAGS, ("Path to directory for firmware."), NULL, MDFNST_STRING, "firmware" },
 
-  { "filesys.fname_movie", MDFNSF_NOFLAGS, gettext_noop("Format string for movie filename."), fname_extra, MDFNST_STRING, "%f.%M%p.%x" },
-  { "filesys.fname_state", MDFNSF_NOFLAGS, gettext_noop("Format string for state filename."), fname_extra, MDFNST_STRING, "%f.%M%X" /*"%F.%M%p.%x"*/ },
-  { "filesys.fname_sav", MDFNSF_NOFLAGS, gettext_noop("Format string for save games filename."), gettext_noop("WARNING: %x should always be included, otherwise you run the risk of overwriting save data for games that create multiple save data files.\n\nSee fname_format.txt for more information.  Edit at your own risk."), MDFNST_STRING, "%F.%M%x" },
-  { "filesys.fname_snap", MDFNSF_NOFLAGS, gettext_noop("Format string for screen snapshot filenames."), gettext_noop("WARNING: %x or %p should always be included, otherwise there will be a conflict between the numeric counter text file and the image data file.\n\nSee fname_format.txt for more information.  Edit at your own risk."), MDFNST_STRING, "%f-%p.%x" },
+  { "filesys.fname_movie", MDFNSF_NOFLAGS, ("Format string for movie filename."), fname_extra, MDFNST_STRING, "%f.%M%p.%x" },
+  { "filesys.fname_state", MDFNSF_NOFLAGS, ("Format string for state filename."), fname_extra, MDFNST_STRING, "%f.%M%X" /*"%F.%M%p.%x"*/ },
+  { "filesys.fname_sav", MDFNSF_NOFLAGS, ("Format string for save games filename."), ("WARNING: %x should always be included, otherwise you run the risk of overwriting save data for games that create multiple save data files.\n\nSee fname_format.txt for more information.  Edit at your own risk."), MDFNST_STRING, "%F.%M%x" },
+  { "filesys.fname_snap", MDFNSF_NOFLAGS, ("Format string for screen snapshot filenames."), ("WARNING: %x or %p should always be included, otherwise there will be a conflict between the numeric counter text file and the image data file.\n\nSee fname_format.txt for more information.  Edit at your own risk."), MDFNST_STRING, "%f-%p.%x" },
 
-  { "filesys.state_comp_level", MDFNSF_NOFLAGS, gettext_noop("Save state file compression level."), gettext_noop("gzip/deflate compression level for save states saved to files.  -1 will disable gzip compression and wrapping entirely."), MDFNST_INT, "6", "-1", "9" },
+  { "filesys.state_comp_level", MDFNSF_NOFLAGS, ("Save state file compression level."), ("gzip/deflate compression level for save states saved to files.  -1 will disable gzip compression and wrapping entirely."), MDFNST_INT, "6", "-1", "9" },
 
 
-  { "qtrecord.w_double_threshold", MDFNSF_NOFLAGS, gettext_noop("Double the raw image's width if it's below this threshold."), NULL, MDFNST_UINT, "384", "0", "1073741824" },
-  { "qtrecord.h_double_threshold", MDFNSF_NOFLAGS, gettext_noop("Double the raw image's height if it's below this threshold."), NULL, MDFNST_UINT, "256", "0", "1073741824" },
+  { "qtrecord.w_double_threshold", MDFNSF_NOFLAGS, ("Double the raw image's width if it's below this threshold."), NULL, MDFNST_UINT, "384", "0", "1073741824" },
+  { "qtrecord.h_double_threshold", MDFNSF_NOFLAGS, ("Double the raw image's height if it's below this threshold."), NULL, MDFNST_UINT, "256", "0", "1073741824" },
 
-  { "qtrecord.vcodec", MDFNSF_NOFLAGS, gettext_noop("Video codec to use."), NULL, MDFNST_ENUM, "cscd", NULL, NULL, NULL, NULL, VCodec_List },
+  { "qtrecord.vcodec", MDFNSF_NOFLAGS, ("Video codec to use."), NULL, MDFNST_ENUM, "cscd", NULL, NULL, NULL, NULL, VCodec_List },
 
-  { "video.deinterlacer", MDFNSF_CAT_VIDEO, gettext_noop("Deinterlacer to use for interlaced video."), NULL, MDFNST_ENUM, "weave", NULL, NULL, NULL, SettingChanged, Deinterlacer_List },
+  { "video.deinterlacer", MDFNSF_CAT_VIDEO, ("Deinterlacer to use for interlaced video."), NULL, MDFNST_ENUM, "weave", NULL, NULL, NULL, SettingChanged, Deinterlacer_List },
 
   { NULL }
 };
@@ -1218,8 +1218,8 @@ bool MDFNI_InitializeModules(const std::vector<MDFNGI *> &ExternalSystems)
   &EmulatedGG,
   #endif
 
-  &EmulatedCDPlay,
-  &EmulatedDEMO
+//  &EmulatedCDPlay,
+//  &EmulatedDEMO
  };
  std::string i_modules_string, e_modules_string;
 
@@ -1562,6 +1562,7 @@ static void ProcessAudio(EmulateSpecStruct *espec)
 
 void MDFN_MidSync(EmulateSpecStruct *espec)
 {
+/**
  if(MDFNnetplay)
   return;
 
@@ -1576,6 +1577,8 @@ void MDFN_MidSync(EmulateSpecStruct *espec)
 
  espec->SoundBufSizeALMS = espec->SoundBufSize;
  espec->MasterCyclesALMS = espec->MasterCycles;
+*/
+    return;
 }
 
 void MDFN_MidLineUpdate(EmulateSpecStruct *espec, int y)
@@ -2000,7 +2003,7 @@ void MDFN_MediaSetNotification(uint32 drive_idx, uint32 state_idx, uint32 media_
  DMStatus[drive_idx].media_idx = media_idx;
  DMStatus[drive_idx].orientation_idx = orientation_idx;
 
- MDFND_MediaSetNotification(drive_idx, state_idx, media_idx, orientation_idx);
+ //MDFND_MediaSetNotification(drive_idx, state_idx, media_idx, orientation_idx);
 }
 
 bool MDFN_UntrustedSetMedia(uint32 drive_idx, uint32 state_idx, uint32 media_idx, uint32 orientation_idx)

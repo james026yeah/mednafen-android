@@ -10,9 +10,9 @@
 #endif
 
 // Yes, yes, I know:  There's a better place for including config.h than here, but I'm tired, and this should work fine. :b
-#ifdef HAVE_CONFIG_H
+//#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
+//#endif
 
 #include <assert.h>
 #include <inttypes.h>

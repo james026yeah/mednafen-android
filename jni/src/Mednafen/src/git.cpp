@@ -47,11 +47,11 @@ IDIISG::IDIISG(std::initializer_list<InputDeviceInputInfoStruct> l) : std::vecto
 	break;
 
    case IDIT_SWITCH:
-	bit_size = ceil(log2(idii.SwitchNumPos));
+	//bit_size = ceil(log2(idii.SwitchNumPos));
 	break;
 
    case IDIT_STATUS:
-	bit_size = ceil(log2(idii.StatusNumStates));
+	//bit_size = ceil(log2(idii.StatusNumStates));
 	break;
 
    case IDIT_X_AXIS:

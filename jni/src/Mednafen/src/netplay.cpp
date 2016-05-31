@@ -114,8 +114,8 @@ static void NetError(const char *format, ...)
  temp = trio_vaprintf(format, ap);
  va_end(ap);
 
- MDFND_NetplayText(temp, FALSE);
- MDFND_NetworkClose();
+ //MDFND_NetplayText(temp, FALSE);
+ //MDFND_NetworkClose();
  free(temp);
 }
 
@@ -128,7 +128,7 @@ static void NetPrintText(const char *format, ...)
  temp = trio_vaprintf(format, ap);
  va_end(ap);
 
- MDFND_NetplayText(temp, FALSE);
+ //MDFND_NetplayText(temp, FALSE);
  free(temp);
 }
 
@@ -271,7 +271,7 @@ int NetplayStart(const uint32 PortDeviceCache[16], const uint32 PortDataLenCache
 
   memcpy(&sendbuf[4 + sizeof(login_data_t) + nickname.size()], emu_id, strlen(emu_id));
 
-  MDFND_SendData(&sendbuf[0], sendbuf.size());
+  //MDFND_SendData(&sendbuf[0], sendbuf.size());
 
   TotalInputStateSize = 0;
   for(unsigned x = 0; x < MDFNGameInfo->PortInfo.size(); x++)
@@ -317,11 +317,11 @@ static void SendCommand(uint8 cmd, uint32 len, const void* data = NULL)
  outgoing_buffer[0] = cmd;
  memset(&outgoing_buffer[1], 0, LocalInputStateSize);
  MDFN_en32lsb(&outgoing_buffer[1 + LocalInputStateSize], len);
- MDFND_SendData(&outgoing_buffer[0], LocalInputStateSize + 1 + 4);
+ //MDFND_SendData(&outgoing_buffer[0], LocalInputStateSize + 1 + 4);
 
  if(data != NULL)
  {
-  MDFND_SendData(data, len);
+  //MDFND_SendData(data, len);
  }
 }
 
@@ -443,7 +443,7 @@ static void MDFNI_NetplayPing(void)
  {
   uint64 now_time;
 
-  now_time = MDFND_GetTime();
+  //now_time = MDFND_GetTime();
 
   // Endianness doesn't matter, since it will be echoed back only to us.
   SendCommand(MDFNNPCMD_ECHO, sizeof(now_time), &now_time);
@@ -572,7 +572,7 @@ static void RecvState(const uint32 clen)
 
  cbuf.resize(clen);
 
- MDFND_RecvData(&cbuf[0], clen);
+ //MDFND_RecvData(&cbuf[0], clen);
 
  uLongf len = MDFN_de32lsb(&cbuf[0]);
  if(len > 12 * 1024 * 1024) // Uncompressed length sanity check - 12 MiB max.
@@ -629,7 +629,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
 			{
 			 uint8 buf[4 * 4];
 
-			 MDFND_RecvData(buf, sizeof(buf));
+			 //MDFND_RecvData(buf, sizeof(buf));
 
 			 MDFN_UntrustedSetMedia(MDFN_de32lsb(&buf[0]), MDFN_de32lsb(&buf[4]), MDFN_de32lsb(&buf[8]), MDFN_de32lsb(&buf[12]));
 			}
@@ -647,11 +647,11 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
                           throw MDFN_Error(0, _("Text length is too long: %u"), totallen);
                          }
 
-                         MDFND_RecvData(neobuf, totallen);
+                         //MDFND_RecvData(neobuf, totallen);
 
 			 neobuf[totallen] = 0;
 			 trio_asprintf(&textbuf, "** %s", neobuf);
-                         MDFND_NetplayText(textbuf, FALSE);
+                         //MDFND_NetplayText(textbuf, FALSE);
                          free(textbuf);
 			}
 			break;
@@ -667,13 +667,13 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
                           throw MDFN_Error(0, _("Echo response length is incorrect size: %u"), totallen);
 			 }
 
-                         MDFND_RecvData(&then_time, sizeof(then_time));
+                         //MDFND_RecvData(&then_time, sizeof(then_time));
 
 			 now_time = MDFND_GetTime();
 
                          char *textbuf = NULL;
 			 trio_asprintf(&textbuf, _("*** Round-trip time: %llu ms"), (unsigned long long)(now_time - then_time));
-                         MDFND_NetplayText(textbuf, FALSE);
+                         //MDFND_NetplayText(textbuf, FALSE);
                          free(textbuf);
 			}
 			break;
@@ -697,7 +697,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
                           throw MDFN_Error(0, _("Text command length is too long: %u"), totallen);
 			 }
 
-			 MDFND_RecvData(neobuf, totallen);
+			 //MDFND_RecvData(neobuf, totallen);
 
 			 nicklen = MDFN_de32lsb(neobuf);
 			 if(nicklen > (totallen - 4)) // Sanity check
@@ -724,7 +724,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
 			 {
 			  trio_asprintf(&textbuf, "* %s", &neobuf[4]);
 			 }
-                         MDFND_NetplayText(textbuf, NetEcho);
+                         //MDFND_NetplayText(textbuf, NetEcho);
 			 free(textbuf);
 			}
 			break;
@@ -742,7 +742,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
                           throw MDFN_Error(0, _("Nickname change length is too long: %u"), len);
                          }
 
-                         MDFND_RecvData(neobuf, len);
+                         //MDFND_RecvData(neobuf, len);
 
 			 neobuf[len] = 0;
 
@@ -765,7 +765,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
 			  }
 			  if(!textbuf)
 			   textbuf = trio_aprintf(_("* <%s> is now known as <%s>"), neobuf, newnick);
-                          MDFND_NetplayText(textbuf, IsMeow);
+                          //MDFND_NetplayText(textbuf, IsMeow);
 			  free(textbuf);
 
 			  // Update players list.
@@ -779,7 +779,8 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
 			    auto nns_it = PlayersList.find(nns);
 
 			    if(ons_it == PlayersList.end() || nns_it != PlayersList.end())
-			     MDFND_NetplayText(_("[BUG] Players list state out of sync."), false);
+                                ;
+			     //MDFND_NetplayText(_("[BUG] Players list state out of sync."), false);
 			    else
 			    {
 			     PlayersList[nns] = ons_it->second;
@@ -813,7 +814,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
 			 const uint8 c1 = (cm >> 8) & 0xFF;
 
 			 trio_snprintf(textbuf, sizeof(textbuf), _("* All instances of controllers %u and %u have been swapped."), c0 + 1, c1 + 1);
-			 MDFND_NetplayText(textbuf, false);
+			 //MDFND_NetplayText(textbuf, false);
 
 			 for(auto& it : PlayersList)
 			 {
@@ -858,7 +859,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
 			 if(len > MaxLength)
 			  throw MDFN_Error(0, _("Take/drop/dupe notification is too long: %u"), len);
 
-			 MDFND_RecvData(ntf_buf, len);
+			 //MDFND_RecvData(ntf_buf, len);
 			 ntf_buf[len] = 0;
 
  	 	 	 switch(cmd)
@@ -876,7 +877,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
 				break;
 			 }
                          trio_asprintf(&textbuf, fstr, ntf_buf + 12, GenerateMPSString(MDFN_de32lsb(&ntf_buf[0]), true).c_str(), GenerateMPSString(MDFN_de32lsb(&ntf_buf[4]), false).c_str());
-	                 MDFND_NetplayText(textbuf, false);
+	                 //MDFND_NetplayText(textbuf, false);
 			 free(textbuf);
 
 			 // Update players list.
@@ -884,7 +885,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
 			  auto it = PlayersList.find(std::string((const char*)ntf_buf + 12));
 
 			  if(it == PlayersList.end())
-			   MDFND_NetplayText(_("[BUG] Players list state out of sync."), false);
+			   ;//MDFND_NetplayText(_("[BUG] Players list state out of sync."), false);
 			  else
 			   it->second = MDFN_de32lsb(&ntf_buf[4]);
 			 }
@@ -913,7 +914,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
                           throw MDFN_Error(0, _("Join/Left length is too long: %u"), len);
                          }
 
-                         MDFND_RecvData(neobuf, len);
+                         //MDFND_RecvData(neobuf, len);
 			 neobuf[len] = 0; // NULL-terminate the string
 
 			 mps = MDFN_de32lsb(&neobuf[0]);
@@ -951,7 +952,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
                                   trio_asprintf(&textbuf, _("* %s has connected as: %s"), neobuf + 8, mps_string.c_str());
 			 }
 
-	                 MDFND_NetplayText(textbuf, FALSE);
+	                 //MDFND_NetplayText(textbuf, FALSE);
 			 free(textbuf);
 
 			 // Update players list.
@@ -964,7 +965,7 @@ static void ProcessCommand(const uint8 cmd, const uint32 raw_len, const uint32 P
 			  auto it = PlayersList.find(std::string((const char*)neobuf + 8));
 
 			  if(it == PlayersList.end())
-			   MDFND_NetplayText(_("[BUG] Players list state out of sync."), false);
+			   ;//MDFND_NetplayText(_("[BUG] Players list state out of sync."), false);
 			  else
 			   PlayersList.erase(it);
 			 }
@@ -1039,7 +1040,7 @@ void Netplay_Update(const uint32 PortDevIdx[], uint8* const PortData[], const ui
      wpos += PortLen[n];
     }
    }
-   MDFND_SendData(&outgoing_buffer[0], 1 + LocalInputStateSize);
+   //MDFND_SendData(&outgoing_buffer[0], 1 + LocalInputStateSize);
   }
   //
   //
@@ -1049,7 +1050,7 @@ void Netplay_Update(const uint32 PortDevIdx[], uint8* const PortData[], const ui
 
   do
   {
-   MDFND_RecvData(&incoming_buffer[0], TotalInputStateSize + 1);
+   //MDFND_RecvData(&incoming_buffer[0], TotalInputStateSize + 1);
 
    cmd = incoming_buffer[TotalInputStateSize];
    cmd_raw_len = MDFN_de32lsb(&incoming_buffer[0]);
@@ -1149,23 +1150,23 @@ static bool CC_list(const char *arg);
 
 static CommandEntry ConsoleCommands[]   =
 {
- { "/server", CC_server,	gettext_noop("[REMOTE_HOST] [PORT]"), "Connects to REMOTE_HOST(IP address or FQDN), on PORT." },
+ { "/server", CC_server,	("[REMOTE_HOST] [PORT]"), "Connects to REMOTE_HOST(IP address or FQDN), on PORT." },
 
  { "/connect", CC_server,	NULL, NULL },
 
- { "/gamekey", CC_gamekey,	gettext_noop("[GAMEKEY]"), gettext_noop("Changes the game key to the specified GAMEKEY.") },
+ { "/gamekey", CC_gamekey,	("[GAMEKEY]"), ("Changes the game key to the specified GAMEKEY.") },
 
- { "/quit", CC_quit,		gettext_noop("[MESSAGE]"), gettext_noop("Disconnects from the netplay server.") },
+ { "/quit", CC_quit,		("[MESSAGE]"), ("Disconnects from the netplay server.") },
 
- { "/help", CC_help,		"", gettext_noop("Help, I'm drowning in a sea of cliche metaphors!") },
+ { "/help", CC_help,		"", ("Help, I'm drowning in a sea of cliche metaphors!") },
 
- { "/nick", CC_nick,		gettext_noop("NICKNAME"), gettext_noop("Changes your nickname to the specified NICKNAME.") },
+ { "/nick", CC_nick,		("NICKNAME"), ("Changes your nickname to the specified NICKNAME.") },
 
- { "/swap", CC_swap,		gettext_noop("A B"), gettext_noop("Swap/Exchange all instances of controllers A and B(numbered from 1).") },
+ { "/swap", CC_swap,		("A B"), ("Swap/Exchange all instances of controllers A and B(numbered from 1).") },
 
- { "/dupe", CC_dupe,            gettext_noop("[A] [...]"), gettext_noop("Duplicate and take instances of specified controller(s).") },
- { "/drop", CC_drop,            gettext_noop("[A] [...]"), gettext_noop("Drop all instances of specified controller(s).") },
- { "/take", CC_take,            gettext_noop("[A] [...]"), gettext_noop("Take all instances of specified controller(s).") },
+ { "/dupe", CC_dupe,            ("[A] [...]"), ("Duplicate and take instances of specified controller(s).") },
+ { "/drop", CC_drop,            ("[A] [...]"), ("Drop all instances of specified controller(s).") },
+ { "/take", CC_take,            ("[A] [...]"), ("Take all instances of specified controller(s).") },
 
  { "/list", CC_list,		"", "List players in game." },
 
@@ -1200,7 +1201,7 @@ static bool CC_server(const char *arg)
 	break;
  }
 
- MDFND_NetworkConnect();
+ //MDFND_NetworkConnect();
 
  return(false);
 }
@@ -1230,7 +1231,7 @@ static bool CC_quit(const char *arg)
  if(MDFNnetplay)
  {
   MDFNI_NetplayQuit(arg);
-  MDFND_NetworkClose();
+  //MDFND_NetworkClose();
  }
  else
  {
@@ -1435,7 +1436,7 @@ static bool CC_help(const char *arg)
   {
    char help_buf[512];
    trio_snprintf(help_buf, 512, "%s %s  -  %s", ConsoleCommands[x].name, _(ConsoleCommands[x].help_args), _(ConsoleCommands[x].help_desc));
-   MDFND_NetplayText(help_buf, false);
+   //MDFND_NetplayText(help_buf, false);
   }
  }
  return(true);

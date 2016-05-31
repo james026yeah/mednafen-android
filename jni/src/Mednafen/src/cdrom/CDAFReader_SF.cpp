@@ -19,7 +19,7 @@
 #include "CDAFReader.h"
 #include "CDAFReader_SF.h"
 
-#include <sndfile.h>
+//#include <sndfile.h>
 
 class CDAFReader_SF final : public CDAFReader
 {

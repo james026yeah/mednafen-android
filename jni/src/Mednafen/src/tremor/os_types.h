@@ -22,9 +22,9 @@
 #ifndef _OS_TYPES_H
 #define _OS_TYPES_H
 
-#ifdef HAVE_CONFIG_H
+//#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
+//#endif
 
 #define OGG_BIG_ENDIAN 	  4321
 #define OGG_LITTLE_ENDIAN 1234
