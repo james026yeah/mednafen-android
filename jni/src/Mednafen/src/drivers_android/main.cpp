@@ -18,11 +18,17 @@
 
 JoystickManager *joy_manager = NULL;
 static uint32 volatile MainThreadID = 0;
-
+static char *DrBaseDirectory;
 MDFNGI *CurGame=NULL;
 
 
 static int volatile NeedExitNow = 0;
+
+static std::vector <MDFNSetting> NeoDriverSettings;
+static MDFNSetting DriverSettings[] = 
+{
+      { "osd.alpha_blend", MDFNSF_NOFLAGS, "Enable alpha blending for OSD elements.", NULL, MDFNST_BOOL, "1" },
+};
 
 void MDFND_PrintError(const char *s)
 {
@@ -118,6 +124,7 @@ void MDFND_Sleep(uint32 ms)
 }
 
 static int LoadGame(const char *force_module, const char *path) {
+    CurGame = MDFNI_LoadGame(force_module, path);
     return 1;
 }
 
@@ -129,6 +136,8 @@ int main(int argc, char *argv[])
 {
     std::vector<MDFNGI *> ExternalSystems;
     MDFND_Message("start...................");
+
+    DrBaseDirectory = "/data/data";
 
     if(SDL_Init(SDL_INIT_VIDEO)) {
         return -1;
@@ -143,6 +152,12 @@ int main(int argc, char *argv[])
         return -1;
     }
     MDFND_Message("MDFNI_InitializeModules success");
+
+    for(unsigned int x = 0; x < sizeof(DriverSettings) / sizeof(MDFNSetting); x++)
+        NeoDriverSettings.push_back(DriverSettings[x]);
+
+    if(!MDFNI_Initialize(DrBaseDirectory, NeoDriverSettings))
+        return(-1);
 
     //joy_manager = new JoystickManager();
     //joy_manager->SetAnalogThreshold(MDFN_GetSettingF("analogthreshold") / 100);
