@@ -118,7 +118,6 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	 $(MEDNAFEN_SRC_PATH)/tremor/vorbisfile.c \
 	 $(MEDNAFEN_SRC_PATH)/tremor/window.c \
 	 $(MEDNAFEN_SRC_PATH)/nes/cart.cpp \
-	 $(MEDNAFEN_SRC_PATH)/nes/debug.cpp \
 	 $(MEDNAFEN_SRC_PATH)/nes/fds.cpp \
 	 $(MEDNAFEN_SRC_PATH)/nes/fds-sound.cpp \
 	 $(MEDNAFEN_SRC_PATH)/nes/filter.cpp \
