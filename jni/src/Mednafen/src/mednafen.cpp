@@ -183,8 +183,12 @@ static uint32 PortDataLen[16];
 
 MDFNGI *MDFNGameInfo = NULL;
 
+#ifdef VIDEO_RECORD_SUPPORT
 static QTRecord *qtrecorder = NULL;
+#endif
+#ifdef AUDIO_RECORD_SUPPORT
 static WAVRecord *wavrecorder = NULL;
+#endif
 static Fir_Resampler<16> ff_resampler;
 static double LastSoundMultiplier;
 
@@ -215,6 +219,7 @@ static void SettingChanged(const char* name)
 
 bool MDFNI_StartWAVRecord(const char *path, double SoundRate)
 {
+#ifdef AUDIO_RECORD_SUPPORT
  try
  {
   wavrecorder = new WAVRecord(path, SoundRate, MDFNGameInfo->soundchan);
@@ -226,10 +231,14 @@ bool MDFNI_StartWAVRecord(const char *path, double SoundRate)
  }
 
  return(true);
+#else
+    return false;
+#endif
 }
 
 bool MDFNI_StartAVRecord(const char *path, double SoundRate)
 {
+#ifdef VIDEO_RECORD_SUPPORT
  try
  {
   QTRecord::VideoSpec spec;
@@ -279,24 +288,31 @@ bool MDFNI_StartAVRecord(const char *path, double SoundRate)
   return(false);
  }
  return(true);
+#else
+ return false;
+#endif
 }
 
 void MDFNI_StopAVRecord(void)
 {
+#ifdef VIDEO_RECORD_SUPPORT
  if(qtrecorder)
  {
   delete qtrecorder;
   qtrecorder = NULL;
  }
+#endif
 }
 
 void MDFNI_StopWAVRecord(void)
 {
+#ifdef AUDIO_RECORD_SUPPORT
  if(wavrecorder)
  {
   delete wavrecorder;
   wavrecorder = NULL;
  }
+#endif
 }
 
 void MDFNI_CloseGame(void)
@@ -1401,6 +1417,7 @@ static void ProcessAudio(EmulateSpecStruct *espec)
   }
 
 
+#ifdef VIDEO_RECORD_SUPPORT
   if(qtrecorder && (volume_save != 1 || multiplier_save != 1))
   {
    int32 orig_size = SoundBufPristine.size();
@@ -1409,6 +1426,7 @@ static void ProcessAudio(EmulateSpecStruct *espec)
    for(int i = 0; i < SoundBufSize * MDFNGameInfo->soundchan; i++)
     SoundBufPristine[orig_size + i] = SoundBuf[i];
   }
+#endif
 
 #if 0
   //
@@ -1458,6 +1476,7 @@ static void ProcessAudio(EmulateSpecStruct *espec)
 
 #endif
 
+#ifdef AUDIO_RECORD_SUPPORT
   try
   {
    if(wavrecorder)
@@ -1469,6 +1488,7 @@ static void ProcessAudio(EmulateSpecStruct *espec)
    delete wavrecorder;
    wavrecorder = NULL;
   }
+#endif
 
   if(multiplier_save != LastSoundMultiplier)
   {
@@ -1627,6 +1647,8 @@ void MDFNI_Emulate(EmulateSpecStruct *espec)
 
  // We want to record movies without any dropped video frames and without fast-forwarding sound distortion and without custom volume.
  // The same goes for WAV recording(sans the dropped video frames bit :b).
+#ifdef VIDEO_RECORD_SUPPORT
+#ifdef AUDIO_RECORD_SUPPORT
  if(qtrecorder || wavrecorder)
  {
   multiplier_save = espec->soundmultiplier;
@@ -1635,6 +1657,8 @@ void MDFNI_Emulate(EmulateSpecStruct *espec)
   volume_save = espec->SoundVolume;
   espec->SoundVolume = 1;
  }
+#endif
+#endif
 
  if(MDFNGameInfo->TransformInput)
   MDFNGameInfo->TransformInput();
@@ -1646,8 +1670,10 @@ void MDFNI_Emulate(EmulateSpecStruct *espec)
 
  MDFNMOV_ProcessInput(PortData, PortDataLen, MDFNGameInfo->PortInfo.size());
 
+#ifdef VIDEO_RECORD_SUPPORT
  if(qtrecorder)
   espec->skip = 0;
+#endif
 
  if(TBlur_IsOn())
   espec->skip = 0;
@@ -1719,6 +1745,7 @@ void MDFNI_Emulate(EmulateSpecStruct *espec)
 
  ProcessAudio(espec);
 
+#ifdef VIDEO_RECORD_SUPPORT
  if(qtrecorder)
  {
   int16 *sb_backup = espec->SoundBuf;
@@ -1746,6 +1773,7 @@ void MDFNI_Emulate(EmulateSpecStruct *espec)
   espec->SoundBuf = sb_backup;
   espec->SoundBufSize = sbs_backup;
  }
+#endif
 
  if(TBlur_IsOn())
   TBlur_Run(espec);

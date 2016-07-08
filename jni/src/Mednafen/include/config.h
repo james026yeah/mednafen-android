@@ -52,33 +52,38 @@
 /* The size of `double', as computed by sizeof. */
 #define SIZEOF_DOUBLE 8
 
+/*compress use it */
 /* The size of `int', as computed by sizeof. */
 #define SIZEOF_INT 4
 
+/*compress use it */
 /* The size of `long', as computed by sizeof. */
 #define SIZEOF_LONG 8
 
+/*compress use it*/
 /* The size of `long long', as computed by sizeof. */
 #define SIZEOF_LONG_LONG 8
 
 /* The size of `off_t', as computed by sizeof. */
 #define SIZEOF_OFF_T 8
 
+/*compress use it*/
 /* The size of `ptrdiff_t', as computed by sizeof. */
 #define SIZEOF_PTRDIFF_T 8
 
+/*compress use it*/
 /* The size of `short', as computed by sizeof. */
 #define SIZEOF_SHORT 2
 
+/*compress use it*/
 /* The size of `size_t', as computed by sizeof. */
 #define SIZEOF_SIZE_T 8
 
+/*compress use it*/
 /* The size of `void *', as computed by sizeof. */
 #define SIZEOF_VOID_P 8
 
+/*compress use it*/
 /* The size of `__int64', as computed by sizeof. */
 #define SIZEOF___INT64 0
-
-/* Define to 1 if you have the `mkdir' function. */
-#define HAVE_MKDIR 1
 

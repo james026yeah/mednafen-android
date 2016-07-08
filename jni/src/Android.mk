@@ -18,8 +18,6 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	 $(MEDNAFEN_SRC_PATH)/drivers_android/thread_sdl.cpp \
 	 $(MEDNAFEN_SRC_PATH)/drivers_android/Joystick.cpp \
 	 $(MEDNAFEN_SRC_PATH)/drivers_android/Joystick_SDL.cpp \
-	 $(MEDNAFEN_SRC_PATH)/debug.cpp \
-	 $(MEDNAFEN_SRC_PATH)/dis6502.cpp \
 	 $(MEDNAFEN_SRC_PATH)/endian.cpp \
 	 $(MEDNAFEN_SRC_PATH)/error.cpp \
 	 $(MEDNAFEN_SRC_PATH)/file.cpp \
@@ -35,7 +33,6 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	 $(MEDNAFEN_SRC_PATH)/netplay.cpp \
 	 $(MEDNAFEN_SRC_PATH)/player.cpp \
 	 $(MEDNAFEN_SRC_PATH)/PSFLoader.cpp \
-	 $(MEDNAFEN_SRC_PATH)/qtrecord.cpp \
 	 $(MEDNAFEN_SRC_PATH)/settings.cpp \
 	 $(MEDNAFEN_SRC_PATH)/SNSFLoader.cpp \
 	 $(MEDNAFEN_SRC_PATH)/SPCReader.cpp \
@@ -70,7 +67,6 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	 $(MEDNAFEN_SRC_PATH)/sound/okiadpcm.cpp \
 	 $(MEDNAFEN_SRC_PATH)/sound/OwlResampler.cpp \
 	 $(MEDNAFEN_SRC_PATH)/sound/Stereo_Buffer.cpp \
-	 $(MEDNAFEN_SRC_PATH)/sound/WAVRecord.cpp \
 	 $(MEDNAFEN_SRC_PATH)/cdrom/CDAccess_CCD.cpp \
 	 $(MEDNAFEN_SRC_PATH)/cdrom/CDAccess_Image.cpp \
 	 $(MEDNAFEN_SRC_PATH)/cdrom/CDAFReader_MPC.cpp \

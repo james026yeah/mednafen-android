@@ -356,6 +356,8 @@ std::unique_ptr<Stream> MDFN_AmbigGZOpenHelper(const std::string& path, std::vec
 
 void MDFN_mkdir_T(const char* path)
 {
+   ::mkdir(path, S_IRWXU);
+/*
  #ifdef HAVE_MKDIR
   #if MKDIR_TAKES_ONE_ARG
    ::mkdir(path);
@@ -367,5 +369,6 @@ void MDFN_mkdir_T(const char* path)
  #else
   #error "mkdir() missing?!"
  #endif
+*/
 }
 
