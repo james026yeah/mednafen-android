@@ -319,8 +319,10 @@ void MDFNI_CloseGame(void)
 {
  if(MDFNGameInfo)
  {
+#ifdef NETPLAY_SUPPORT
   if(MDFNnetplay)
    MDFNI_NetplayStop();
+#endif
 
   MDFNSRW_End();
   MDFNMOV_Stop();
@@ -387,10 +389,12 @@ void MDFNI_CloseGame(void)
  MDFN_ClearAllOverrideSettings();
 }
 
+#ifdef NETPLAY_SUPPORT
 int MDFNI_NetplayStart(void)
 {
  return(NetplayStart(PortDevice, PortDataLen));
 }
+#endif
 
 
 #ifdef WANT_NES_EMU
@@ -1663,10 +1667,12 @@ void MDFNI_Emulate(EmulateSpecStruct *espec)
  if(MDFNGameInfo->TransformInput)
   MDFNGameInfo->TransformInput();
 
+#ifdef NETPLAY_SUPPORT
  if(MDFNnetplay)
  {
   Netplay_Update(PortDevice, PortData, PortDataLen);
  }
+#endif
 
  MDFNMOV_ProcessInput(PortData, PortDataLen, MDFNGameInfo->PortInfo.size());
 
@@ -1680,25 +1686,31 @@ void MDFNI_Emulate(EmulateSpecStruct *espec)
 
  if(espec->NeedRewind)
  {
+#ifdef NETPLAY_SUPPORT
   if(MDFNnetplay)
   {
    espec->NeedRewind = false;
    MDFN_DispMessage(_("Can't rewind during netplay."));
   }
+#endif
  }
 
  // Don't even save states with state rewinding if netplay is enabled, it will degrade netplay performance, and can cause
  // desynchs with some emulation(IE SNES based on bsnes).
 
+#ifdef NETPLAY_SUPPORT
  if(MDFNnetplay)
   espec->NeedSoundReverse = false;
  else
+#endif
   espec->NeedSoundReverse = MDFNSRW_Frame(espec->NeedRewind);
 
  MDFNGameInfo->Emulate(espec);
 
+#ifdef NETPLAY_SUPPORT
  if(MDFNnetplay)
   Netplay_PostProcess(PortDevice, PortData, PortDataLen);
+#endif
 
  //
  // Sanity checks
@@ -1950,9 +1962,11 @@ void MDFN_DoSimpleCommand(int cmd)
 
 void MDFN_QSimpleCommand(int cmd)
 {
+#ifdef NETPLAY_SUPPORT
  if(MDFNnetplay)
   NetplaySendCommand(cmd, 0);
  else
+#endif
  {
   if(!MDFNMOV_IsPlaying())
   {
@@ -2070,6 +2084,7 @@ bool MDFNI_SetMedia(uint32 drive_idx, uint32 state_idx, uint32 media_idx, uint32
 {
  assert(MDFNGameInfo);
 
+#ifdef NETPLAY_SUPPORT
  if(MDFNnetplay || MDFNMOV_IsRecording())
  {
   uint8 buf[4 * 4];
@@ -2085,8 +2100,13 @@ bool MDFNI_SetMedia(uint32 drive_idx, uint32 state_idx, uint32 media_idx, uint32
   if(MDFNMOV_IsRecording())
    MDFNMOV_AddCommand(MDFNNPCMD_SET_MEDIA, sizeof(buf), buf);
  }
+#endif
 
+#ifdef NETPLAY_SUPPORT
  if(!MDFNnetplay && !MDFNMOV_IsPlaying())
+#else
+ if (!MDFNMOV_IsPlaying())
+#endif
   return MDFN_UntrustedSetMedia(drive_idx, state_idx, media_idx, orientation_idx);
  else
   return false;

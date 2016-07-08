@@ -90,10 +90,12 @@ void MDFNI_SaveMovie(char *fname, const MDFN_Surface *surface, const MDFN_Rect *
    throw MDFN_Error(0, _("Module \"%s\" doesn't support save states."), MDFNGameInfo->shortname);
   }
 
+#ifdef NETPLAY_SUPPORT
   if(MDFNnetplay && (MDFNGameInfo->SaveStateAltersState == true))
   {
    throw MDFN_Error(0, _("Module %s is not compatible with manual movie save starting/stopping during netplay."), MDFNGameInfo->shortname);
   }
+#endif
 
   if(ActiveMovieMode == MOVIE_PLAYING)	/* Can't interrupt playback.*/
   {
@@ -166,10 +168,12 @@ void MDFNI_LoadMovie(char *fname)
    throw MDFN_Error(0, _("Module \"%s\" doesn't support save states."), MDFNGameInfo->shortname);
   }
 
+#ifdef NETPLAY_SUPPORT
   if(MDFNnetplay)
   {
    throw MDFN_Error(0, _("Can't play movies during netplay."));
   }
+#endif
 
   if(ActiveMovieMode == MOVIE_RECORDING)	/* Can't interrupt recording. */
   {

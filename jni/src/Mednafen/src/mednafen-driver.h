@@ -108,7 +108,9 @@ bool MDFNI_InitializeModules(const std::vector<MDFNGI *> &ExternalSystems);
 int MDFNI_Initialize(const char *basedir, const std::vector<MDFNSetting> &DriverSettings);
 
 /* Call only when a game is loaded. */
+#ifdef NETPLAY_SUPPORT
 int MDFNI_NetplayStart(void);
+#endif
 
 /* Emulates a frame. */
 void MDFNI_Emulate(EmulateSpecStruct *espec);

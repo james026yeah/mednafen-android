@@ -680,10 +680,12 @@ bool MDFNI_SaveState(const char *fname, const char *suffix, const MDFN_Surface *
    throw MDFN_Error(0, _("Module \"%s\" doesn't support save states."), MDFNGameInfo->shortname);
   }
 
+#ifdef NETPLAY_SUPPORT
   if(MDFNnetplay && (MDFNGameInfo->SaveStateAltersState == true))
   {
    throw MDFN_Error(0, _("Module %s is not compatible with manual state saving during netplay."), MDFNGameInfo->shortname);
   }
+#endif
 
   //
   //
@@ -718,10 +720,12 @@ bool MDFNI_SaveState(const char *fname, const char *suffix, const MDFN_Surface *
   else
    MDFN_PrintError("%s", e.what());
 
+#ifdef NETPLAY_SUPPORT
   if(MDFNnetplay)
    //MDFND_NetplayText(e.what(), false);
 
   ret = false;
+#endif
  }
 
  return(ret);
@@ -764,10 +768,12 @@ bool MDFNI_LoadState(const char *fname, const char *suffix) noexcept
    MDFNSS_LoadSM(&sm, false);
   }
 
+#ifdef NETPLAY_SUPPORT
   if(MDFNnetplay)
   {
    NetplaySendState();
   }
+#endif
 
   if(MDFNMOV_IsRecording())
    MDFNMOV_RecordState();
@@ -787,10 +793,12 @@ bool MDFNI_LoadState(const char *fname, const char *suffix) noexcept
   else
    MDFN_PrintError("%s", e.what());
 
+#ifdef NETPLAY_SUPPORT
   if(MDFNnetplay)
    //MDFND_NetplayText(e.what(), false);
 
   ret = false;
+#endif
  }
 
  return(ret);

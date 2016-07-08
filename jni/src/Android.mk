@@ -30,7 +30,6 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	 $(MEDNAFEN_SRC_PATH)/MemoryStream.cpp \
 	 $(MEDNAFEN_SRC_PATH)/mempatcher.cpp \
 	 $(MEDNAFEN_SRC_PATH)/movie.cpp \
-	 $(MEDNAFEN_SRC_PATH)/netplay.cpp \
 	 $(MEDNAFEN_SRC_PATH)/player.cpp \
 	 $(MEDNAFEN_SRC_PATH)/PSFLoader.cpp \
 	 $(MEDNAFEN_SRC_PATH)/settings.cpp \
