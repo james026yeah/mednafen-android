@@ -1,5 +1,14 @@
+#include <endian.h>
+
+#if BYTE_ORDER==LITTLE_ENDIAN
 /* Define on little-endian platforms. */
-#define LSB_FIRST 1
+    #define LSB_FIRST 1
+#endif
+
+#if BYTE_ORDER==BIG_ENDIAN
+/* Define on big-endian platforms. */
+    #define MSB_FIRST 1
+#endif
 
 /* Mednafen version definition. */
 #define MEDNAFEN_VERSION "0.9.38.7"
