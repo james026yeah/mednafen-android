@@ -153,6 +153,7 @@ int main(int argc, char *argv[])
     }
     MDFND_Message("MDFNI_InitializeModules success");
 
+/*
     for(unsigned int x = 0; x < sizeof(DriverSettings) / sizeof(MDFNSetting); x++)
         NeoDriverSettings.push_back(DriverSettings[x]);
 
@@ -166,6 +167,7 @@ int main(int argc, char *argv[])
     } else {
         NeedExitNow = 1;
     }
+*/
 
     while (!NeedExitNow) {
     //loop enjoy game

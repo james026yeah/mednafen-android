@@ -58,14 +58,14 @@
 
 /*compress use it */
 /* The size of `long', as computed by sizeof. */
-#define SIZEOF_LONG 8
+#define SIZEOF_LONG 4
 
 /*compress use it*/
 /* The size of `long long', as computed by sizeof. */
 #define SIZEOF_LONG_LONG 8
 
 /* The size of `off_t', as computed by sizeof. */
-#define SIZEOF_OFF_T 8
+#define SIZEOF_OFF_T 4
 
 /*compress use it*/
 /* The size of `ptrdiff_t', as computed by sizeof. */

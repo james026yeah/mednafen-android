@@ -254,8 +254,10 @@ LOCAL_STATIC_LIBRARIES := c++_shared
 #LOCAL_SHARED_LIBRARIES := zlib
 L_CFLAGS := -DHAVE_CONFIG_H
 L_CPPFLAGS := -DHAVE_CONFIG_H
-LOCAL_CPP_FEATURES := -fexceptions
+#LOCAL_CPP_FEATURES := -fexceptions -fsigned-char
 APP_CPPFLAGS += -fexceptions
+LOCAL_CFLAGS += -fwrapv -fomit-frame-pointer -fsigned-char -fno-aggressive-loop-optimizations -fno-fast-math -fno-unsafe-math-optimizations
+LOCAL_CPPFLAGS += -fsigned-char
 
 LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -llog -lz
 
