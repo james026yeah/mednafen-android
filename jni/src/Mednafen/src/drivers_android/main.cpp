@@ -11,6 +11,7 @@
 
 #include "input.h"
 #include "Joystick.h"
+#include "video.h"
 
 #define LOG_TAG  "mednafen"
 
@@ -123,6 +124,11 @@ void MDFND_Sleep(uint32 ms)
     SDL_Delay(ms);
 }
 
+void MakeDebugSettings(std::vector <MDFNSetting> &settings) {
+    MDFN_printf("%s", __FUNCTION__);
+    return;
+}
+
 static int LoadGame(const char *force_module, const char *path) {
     CurGame = MDFNI_LoadGame(force_module, path);
     return 1;
@@ -135,15 +141,17 @@ int CloseGame(void) {
 int main(int argc, char *argv[])
 {
     std::vector<MDFNGI *> ExternalSystems;
+    char *needie = NULL;
     MDFND_Message("start...................");
 
     DrBaseDirectory = "/data/data";
 
     if(SDL_Init(SDL_INIT_VIDEO)) {
+        MDFND_PrintError("SDL_Init failed");
         return -1;
     }
 
-    SDL_JoystickEventState(SDL_IGNORE);
+    //SDL_JoystickEventState(SDL_IGNORE);
 
     MainThreadID = MDFND_ThreadID();
 
@@ -153,9 +161,16 @@ int main(int argc, char *argv[])
     }
     MDFND_Message("MDFNI_InitializeModules success");
 
-/*
-    for(unsigned int x = 0; x < sizeof(DriverSettings) / sizeof(MDFNSetting); x++)
+    for(unsigned int x = 0; x < sizeof(DriverSettings) / sizeof(MDFNSetting); x++) {
+        MDFN_printf("push setting %s to NeoDriverSettings", DriverSettings[x].name);
         NeoDriverSettings.push_back(DriverSettings[x]);
+    }
+
+    MakeDebugSettings(NeoDriverSettings);
+    //Video_MakeSettings(NeoDriverSettings);
+    //MakeInputSettings(NeoDriverSettings);
+
+/*
 
     if(!MDFNI_Initialize(DrBaseDirectory, NeoDriverSettings))
         return(-1);

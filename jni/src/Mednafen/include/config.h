@@ -87,3 +87,5 @@
 /* The size of `__int64', as computed by sizeof. */
 #define SIZEOF___INT64 0
 
+/* Define if we are compiling with NES emulation. */
+#define WANT_NES_EMU 1

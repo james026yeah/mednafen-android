@@ -1178,6 +1178,7 @@ static void BuildDynamicSetting(MDFNSetting *setting, const char *system_name, c
 
 bool MDFNI_InitializeModules(const std::vector<MDFNGI *> &ExternalSystems)
 {
+    MDFN_printf("%s", __FUNCTION__);
  static MDFNGI *InternalSystems[] =
  {
   #ifdef WANT_NES_EMU
@@ -1250,6 +1251,7 @@ bool MDFNI_InitializeModules(const std::vector<MDFNGI *> &ExternalSystems)
 
  for(unsigned int i = 0; i < sizeof(InternalSystems) / sizeof(MDFNGI *); i++)
  {
+  MDFN_printf("system name->%s", InternalSystems[i]->fullname);
   AddSystem(InternalSystems[i]);
   if(i)
    i_modules_string += " ";
